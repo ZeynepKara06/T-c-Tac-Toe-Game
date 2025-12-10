@@ -1,0 +1,62 @@
+print("Welcome to Tic-Tac-Toe!")
+print("You are 'O'. Computer is 'X'.")
+print("Enter a number 1-9 to make your move.")
+
+board = ["1", "2", "3",
+         "4","5","6",
+         "7","8","9"]
+
+def display_board(board):
+    print(board[0], board[1], board[2])
+    print(board[3], board[4], board[5])
+    print(board[6], board[7], board[8])
+    
+  
+def user_move(board):                 # user moves
+    while True:
+        move = int(input("Your move (1-9): "))
+        if move >= 1 and move <= 9 and board[move-1] not in ("X","O"):
+            board[move-1] = "O"
+            break
+        else:
+            print("Invalid move, try again.")
+   
+import random
+
+def computer_move(board):
+    while True:
+        move = random.randint(1, 9)        # computer moves
+        if board[move-1] not in ("X", "O"):  
+            board[move-1] = "X"
+            break
+
+def check(board):
+    win_positions = [
+        (0,1,2), (3,4,5), (6,7,8),
+        (0,3,6), (1,4,7), (2,5,8),
+        (0,4,8), (2,4,6)
+    ]
+    for a,b,c in win_positions:
+        if board[a] == board[b] == board[c]:
+            return board[a]
+    if all(x in ("X","O") for x in board):
+        return "Tie"
+
+    return None
+while True:              
+    display_board(board)       # first it shows the board
+    
+    user_move(board)           # user move
+    result = check(board)
+    if result:
+        display_board(board)  
+        print("Result:", result)
+        break
+
+    computer_move(board)       # computer move
+
+    result = check(board)
+    if result:
+        computer_move(board)
+        print("Result:", result)
+        break
